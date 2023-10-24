@@ -1,11 +1,12 @@
 
 % USER INPUTS ============================================================
 
-image_type = 'sum';% 'max';
+%image_type = 'sum';
+image_type = 'max';
 
 projection_method = 'linear';
 
-data_path = fullfile(pwd,'test_data','ap_sagittal');
+data_path = fullfile(pwd,'test_data','ap_sagittal', 'processed_data');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % DO WORK%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
