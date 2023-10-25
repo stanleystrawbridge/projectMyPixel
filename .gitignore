@@ -25,3 +25,9 @@ test_data/ap_sagittal/processed_data/projections/max/figures/raw/MAX_stage=hh8_s
 test_data/ap_sagittal/processed_data/projections/max/figures/raw/MAX_stage=hh8_sample=1/roi_c3=gli3.png
 test_data/ap_sagittal/processed_data/projections/max/figures/raw/MAX_stage=hh8_sample=1/roi_c3=gli3.svg
 test_data/ap_sagittal/processed_data/projections/max/objects/obj_MAX_stage=hh8_sample=1_projection=anteriorPosterior_c0=dapi_c1=shh_c2=fst_c3=gli3.mat
+test_data/wholemount_ventral/desktop.ini
+test_data/wholemount_ventral/processed_data/desktop.ini
+test_data/wholemount_ventral/processed_data/images/desktop.ini
+test_data/wholemount_ventral/processed_data/labels/desktop.ini
+test_data/wholemount_ventral/RGBs/desktop.ini
+test_data/wholemount_ventral/segmentation/desktop.ini
