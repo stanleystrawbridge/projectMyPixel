@@ -6,7 +6,8 @@ image_type = 'max';
 
 projection_method = 'linear';
 
-data_path = fullfile(pwd,'test_data','ap_sagittal', 'processed_data');
+% data_path = fullfile(pwd,'test_data','ap_sagittal', 'processed_data');
+data_path = fullfile(pwd,'test_data','wholemount_ventral', 'processed_data');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % DO WORK%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
