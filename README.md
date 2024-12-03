@@ -21,11 +21,10 @@ Analysi
 ### Usage
 
 1. **Processing Images**:
-   - Process images into RGB, label using the Computer Vision toolbox.
-   - Place the processed images in the **max** or **sum** folder, respectively.
-   - In the **labels** directory, put the corresponding labeled images.
-   - Change the method in **projectMyPixel.m** between either the maximum or sum projection method.
-
+   - Generate sum stacks of raw confocal images and place in 'data/sum_stacks'
+   - Process images into RGB, import all images into MATLAB's ImageLabeler from the Computer Vision toolbox; label roi with polygon and ap with line.
+   - Export label definitions to file named segmentation.m in 'data'
+   
 2. **Running the Main Script**:
    - Open **main_ap_patterning_ex_vivo.m**.
    - Provide the following user inputs:
@@ -39,7 +38,7 @@ Analysi
 
 ### Required Scripts
 
-- **main_ap_patterning_ex_vivo.m**: Main script for processing AP patterning.
+- **main.m**: Main script for processing AP patterning.
 - **projectMyPixel.m**: Function for processing and generating processed images.
 - **percentileTraces.m**: Function for generating percentile traces.
 
