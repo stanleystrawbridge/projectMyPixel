@@ -77,7 +77,7 @@ for i = 1:numel(image_files)
 
     % make manifolds-------------------------------------------------------
     
-    manifold = gTruth.LabelData.(field_names{2}){:};
+    manifold = gTruth.LabelData.ap{i};
 
     roi_mask_pixels = roi_mask_pixels*pixel_size;
     manifold = manifold{:}*pixel_size;
