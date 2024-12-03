@@ -3,7 +3,7 @@
 projectMyPixel is an image processing tool for simple dimensional reduction by the projection of pixels from fluorescent images onto lower dimensional manifolds.
 
 
-##2024_chinnaiya_et_al
+## 2024_chinnaiya_et_al
 
 main.m takes in segmentation and multichannel images of developing chick embryos and outputs anterior-posterior (AP) projects and raw_percentile_traces.
 
