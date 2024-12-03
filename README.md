@@ -17,7 +17,7 @@ Analysi
 - **data/projections**: OUTUPT First analysis resulting from dimensional reducation by pixel projection.
 - **data/raw_percentile_traces**: OUTUPT Takes in projections from 'data/projections' and calulates the median AP signal trace.
 - **src**: Houses classes projectMyPixel.m and percentileTraces.m
--
+
 ### Usage
 
 1. **Processing Images**:
