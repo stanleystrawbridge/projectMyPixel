@@ -14,7 +14,7 @@ data_path = fullfile(pwd,'data');
 src_path = fullfile(pwd,'src');
 addpath(src_path)
 
-load(fullfile(data_path,'segmentation'))
+load(fullfile(data_path,'segmentation_rebuttal'))
 
 % Use raw sum stacks for quantification, not max_..._rgb
 image_files = gTruth.DataSource.Source;
@@ -77,7 +77,7 @@ for i = 1:numel(image_files)
 
     % make manifolds-------------------------------------------------------
     
-    manifold = gTruth.LabelData.ap{i};
+    manifold = gTruth.LabelData.manifold{i};
 
     roi_mask_pixels = roi_mask_pixels*pixel_size;
     manifold = manifold{:}*pixel_size;
