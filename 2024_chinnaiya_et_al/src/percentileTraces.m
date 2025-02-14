@@ -32,7 +32,6 @@ classdef percentileTraces
             traces.projection = projection;
             traces.file = file;
             
-
             traces = setIntput(traces,save_path);
 
             traces = traces.makeTraces;
@@ -182,9 +181,9 @@ classdef percentileTraces
             for i = 1:traces.number_of_markers
                 x(:,i) = smooth(x(:,i),smoothing);
             end
-
-            x = x - repmat(min(x),size(x,1),1);
-            x = x ./ repmat(max(x),size(x,1),1);
+            % 
+            % x = x - repmat(min(x),size(x,1),1);
+            % % x = x ./ repmat(max(x),size(x,1),1);
             
             fig1 = figure(1);
             clf

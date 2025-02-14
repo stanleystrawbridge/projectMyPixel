@@ -14,7 +14,7 @@ data_path = fullfile(pwd,'data');
 src_path = fullfile(pwd,'src');
 addpath(src_path)
 
-load(fullfile(data_path,'segmentation_rebuttal'))
+load(fullfile(data_path,'segmentation_rebuttal_with_background'))
 
 % Use raw sum stacks for quantification, not max_..._rgb
 image_files = gTruth.DataSource.Source;
@@ -56,11 +56,17 @@ for i = 1:numel(image_files)
         im(:,:,j) = imread(image_files{i},j);
     end
 
-    % make roi mask--------------------------------------------------------    
-    hull_points =  gTruth.LabelData.roi{i};
+    % make roi and background mask-----------------------------------------
     image_size = [imageInfo(1).Height,imageInfo(1).Width];
+   
+    roi_points =  gTruth.LabelData.roi{i};
+    if iscell(roi_points)
+        roi_points = roi_points{:};
+    end
+    [roi_mask, roi_mask_pixels] = makeRoiMask(roi_points,image_size);
     
-    [roi_mask, roi_mask_pixels] = makeRoiMask(hull_points,image_size);
+    background_points = gTruth.LabelData.background{i};
+    [background_mask, background_mask_pixels] = makeRoiMask(background_points,image_size);
     
     % make intensity matrix------------------------------------------------
     idx = sub2ind(size(im(:,:,1)),...
@@ -75,6 +81,22 @@ for i = 1:numel(image_files)
     end
 
 
+    % perform background correction----------------------------------------
+    idx = sub2ind(size(im(:,:,1)),...
+                   background_mask_pixels(:,2),...
+                   background_mask_pixels(:,1));
+
+    background = zeros(numel(idx),n_channels);
+    
+    for j = 1:n_channels
+        x = im(:,:,j);
+        background(:,j) = x(idx);
+    end
+
+    background = mean(background);
+
+    intensity = intensity./ repmat(background,size(intensity,1),1);
+
     % make manifolds-------------------------------------------------------
     
     manifold = gTruth.LabelData.manifold{i};
@@ -82,8 +104,8 @@ for i = 1:numel(image_files)
     roi_mask_pixels = roi_mask_pixels*pixel_size;
     manifold = manifold{:}*pixel_size;
     
-    obj = projectMyPixel(roi_mask_pixels,intensity,manifold,...
-        projection_method,pixel_size);
+    obj = projectMyPixel(roi_mask_pixels, ...
+        intensity, manifold, projection_method, pixel_size);
        
     % flip AP
     obj.projection_absolute = ...
@@ -130,7 +152,7 @@ for i = 1:numel(image_files)
 
 end
 
-
+%%
 % percentile traces
 trace_save_path = fullfile(data_path,'raw_percentile_traces',image_type);
 
@@ -140,11 +162,47 @@ end
 
 obj_files = dir(fullfile(obj_save_path,'*.mat'));
 
+n_bins = 500;
+number_of_markers = size(obj.intensity,2);
+correction_factor = zeros(numel(obj_files), number_of_markers);
+
+for i = 1:numel(obj_files)
+    
+    load(fullfile(obj_files(i).folder,obj_files(i).name))   
+
+    [min_d,max_d] = bounds(obj.projection_absolute);
+            
+    bins = linspace(min_d,max_d+1,n_bins+1)';
+
+    values = zeros(n_bins,number_of_markers);
+    
+    for idx = 1:n_bins
+
+        for jdx = 1:number_of_markers
+        
+            start = bins(idx);
+            stop =  bins(idx+1);  
+            
+            kdx = obj.projection_absolute >=start & ...
+                obj.projection_absolute < stop;
+                
+            values(idx,jdx) = median(obj.intensity(kdx,jdx));
+
+        end
+
+    end
+
+    correction_factor(i,:) = max(values)- min(values);
+
+end
+
+correction_factor = max(correction_factor);
+
 for i = 1:numel(obj_files)
     
     load(fullfile(obj_files(i).folder,obj_files(i).name))
     
-    traces = percentileTraces(obj,obj_files(i),trace_save_path);    
+    traces = percentileTraces(obj,obj_files(i),trace_save_path, correction_factor);    
     
 end
 
@@ -184,7 +242,7 @@ function f = plotRawFluorescence(obj,save_folder,marker_names )
 
 
     f = obj.intensity;
-    f_logged = log10(f+1);     
+    f_logged = log10(f);     
     
     x = obj.coordinates(:,1);
     y = obj.coordinates(:,2);
@@ -246,7 +304,7 @@ end
 
 function plotData(obj,projection_name,marker_names,marker_colors,save_path)
  
-    fluorescence = log10(obj.intensity+1);
+    fluorescence = log10(obj.intensity);
     
     projection_type = {'projection_absolute', 'projection_fractional'};
 

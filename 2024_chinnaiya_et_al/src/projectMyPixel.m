@@ -19,19 +19,19 @@ classdef projectMyPixel%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     methods%===============================================================        
         
-        function obj = projectMyPixel(varargin)%---------------------------
+        function obj = projectMyPixel(varargin) %--------------------------
 
             obj = obj.importData(varargin);            
 
             obj = obj.linearMethod;
             
-        end%---------------------------------------------------------------
+        end %--------------------------------------------------------------
 
         
         %------------------------------------------------------------------
         % INITIALIZATION---------------------------------------------------
                
-        function obj = importData(obj,args)%------------------------------
+        function obj = importData(obj,args) %------------------------------
             
             obj.coordinates = args{1};
             obj.intensity = args{2};
@@ -40,13 +40,13 @@ classdef projectMyPixel%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
             obj.n_coordinates = size(obj.coordinates,1);
 
-        end%---------------------------------------------------------------               
-                    
+        end %--------------------------------------------------------------                                  
+
 
         %------------------------------------------------------------------
         % PROJECTION METHODS-----------------------------------------------
         
-        function obj = linearMethod(obj)%----------------------------------
+        function obj = linearMethod(obj) %---------------------------------
                                     
             line = obj.manifold;
 
@@ -79,7 +79,7 @@ classdef projectMyPixel%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                     
                 elseif idx == n_line_points
                     
-                    segment = line([end-1:end],:);
+                    segment = line(end-1:end,:);
                     segment_number = n_line_points-1;
                    
                     % project that point onto the line segment
@@ -138,16 +138,16 @@ classdef projectMyPixel%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                    obj.projection_absolute./max(obj.projection_absolute);
 
 
-        end%---------------------------------------------------------------
+        end %--------------------------------------------------------------
         
 
-    end%===================================================================
+    end %==================================================================
         
-    
-    methods (Static)%======================================================
+     
+    methods (Static) %=====================================================
                      
         
-        function idx = minDistance2Point(reference_points,query_point)%----
+        function idx = minDistance2Point(reference_points,query_point) %---
 
             n_ref_points = size(reference_points,1);
             Q = repmat(query_point,n_ref_points,1);
@@ -161,7 +161,7 @@ classdef projectMyPixel%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         end%---------------------------------------------------------------
 
 
-        function  proj_p = point2segment(segment,p)%------------------------
+        function  proj_p = point2segment(segment,p)  %---------------------
 
             dims = size(p,2);
             
@@ -201,7 +201,7 @@ classdef projectMyPixel%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                 proj_p = proj_p(1:2);
             end
             
-        end%---------------------------------------------------------------
+        end %---------------------------------------------------------------
 
     
         function [radius_length, distance_along_radius] = line2segment(focus,boundary,point)
@@ -234,7 +234,8 @@ classdef projectMyPixel%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
                 
 
-                isInRingSegment(i) =  abs(ring_segment_length-subsegment_length_sum) < 1e-5; % less than a small value, numerically 0
+                isInRingSegment(i) =  ...
+                    abs(ring_segment_length-subsegment_length_sum) < 1e-5; % less than a small value, numerically 0
             
             end
 
@@ -268,10 +269,10 @@ classdef projectMyPixel%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
             end
 
-        end%---------------------------------------------------------------
+        end %--------------------------------------------------------------
 
 
-        function x_0 = lineLineIntersection(data)
+        function x_0 = lineLineIntersection(data) %------------------------
  
             x = data(:,1);
             y = data(:,2);
@@ -285,10 +286,10 @@ classdef projectMyPixel%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                  - (x(3)*y(4)-x(4)*y(3))*(y(1)-y(2));
 
             x_0 =[N_x/D, N_y/D];
-        end%---------------------------------------------------------------
+        end %--------------------------------------------------------------
 
-    end%===================================================================
+    end %==================================================================
     
     
-end%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+end %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
