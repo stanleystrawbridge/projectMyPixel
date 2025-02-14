@@ -8,6 +8,7 @@ classdef percentileTraces
 
         n_bins = 500
         centiles = [0 10 25 50 75 90]
+        correction_factor
         bins_absolute
         bins_relative
         values
@@ -26,13 +27,15 @@ classdef percentileTraces
     methods %==============================================================
 
 
-        function traces = percentileTraces(projection,file,save_path) %---- 
+        function traces = percentileTraces(projection,file,save_path,correction_factor) %---- 
 
             % initializ inputs
             traces.projection = projection;
             traces.file = file;
             
             traces = setIntput(traces,save_path);
+            
+            traces.correction_factor = correction_factor;
 
             traces = traces.makeTraces;
 
@@ -40,7 +43,7 @@ classdef percentileTraces
 
             traces.overlayTraces;
 
-            traces.overlayTracesWithIQR;
+            % traces.overlayTracesWithIQR;
 
             save(traces.save_path,'traces')
 
@@ -177,13 +180,15 @@ classdef percentileTraces
             smoothing = 20;
 
             x = permute(traces.values(:,4,:), [1 3 2]);
-            
-            for i = 1:traces.number_of_markers
-                x(:,i) = smooth(x(:,i),smoothing);
-            end
-            % 
-            % x = x - repmat(min(x),size(x,1),1);
-            % % x = x ./ repmat(max(x),size(x,1),1);
+            x = x - repmat(min(x),size(x,1),1);
+            x = x ./ repmat(traces.correction_factor,size(x,1),1);
+
+            % for i = 1:traces.number_of_markers
+            %     x(:,i) = smooth(x(:,i),smoothing);
+            % end
+           
+            % x = x ./ repmat(traces.correction_factor,size(x,1),1);
+
             
             fig1 = figure(1);
             clf

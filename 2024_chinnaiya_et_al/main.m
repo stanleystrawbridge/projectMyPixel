@@ -192,7 +192,8 @@ for i = 1:numel(obj_files)
 
     end
 
-    correction_factor(i,:) = max(values)- min(values);
+    values = values - min(values);
+    correction_factor(i,:) = max(values);
 
 end
 
