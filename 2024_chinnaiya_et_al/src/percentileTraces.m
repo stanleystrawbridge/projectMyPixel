@@ -179,10 +179,10 @@ classdef percentileTraces
             
             smoothing = 20;
 
-            x = permute(traces.values(:,4,:), [1 3 2]);
+            x = permute(traces.values(:,4,:), [1 3 2]);            
             x = x - repmat(min(x),size(x,1),1);
             x = x ./ repmat(traces.correction_factor,size(x,1),1);
-
+            x = x ./ repmat(max(max(x(:,2:3))),size(x,1),3);
             % for i = 1:traces.number_of_markers
             %     x(:,i) = smooth(x(:,i),smoothing);
             % end
