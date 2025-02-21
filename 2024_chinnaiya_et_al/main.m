@@ -108,10 +108,10 @@ for i = 1:numel(image_files)
         intensity, manifold, projection_method, pixel_size);
        
     % flip AP
-    obj.projection_absolute = ...
-        abs(max(obj.projection_absolute)-obj.projection_absolute);
-    obj.projection_fractional = ...
-        abs(max(obj.projection_fractional)-obj.projection_fractional);
+    % obj.projection_absolute = ...
+    %     abs(max(obj.projection_absolute)-obj.projection_absolute);
+    % obj.projection_fractional = ...
+    %     abs(max(obj.projection_fractional)-obj.projection_fractional);
 
     % Save data and objects -----------------------------------------------
     image_name = extractBetween(image_files{i},'\SUM_','.');
