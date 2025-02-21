@@ -153,7 +153,7 @@ for i = 1:numel(image_files)
 end
 
 %%
-% percentile traces
+% percentile traces =======================================================
 trace_save_path = fullfile(data_path,'raw_percentile_traces',image_type);
 
 if ~exist(trace_save_path,'dir')
@@ -162,42 +162,7 @@ end
 
 obj_files = dir(fullfile(obj_save_path,'*.mat'));
 
-n_bins = 500;
-number_of_markers = size(obj.intensity,2);
-correction_factor = zeros(numel(obj_files), number_of_markers);
-
-for i = 1:numel(obj_files)
-    
-    load(fullfile(obj_files(i).folder,obj_files(i).name))   
-
-    [min_d,max_d] = bounds(obj.projection_absolute);
-            
-    bins = linspace(min_d,max_d+1,n_bins+1)';
-
-    values = zeros(n_bins,number_of_markers);
-    
-    for idx = 1:n_bins
-
-        for jdx = 1:number_of_markers
-        
-            start = bins(idx);
-            stop =  bins(idx+1);  
-            
-            kdx = obj.projection_absolute >=start & ...
-                obj.projection_absolute < stop;
-                
-            values(idx,jdx) = median(obj.intensity(kdx,jdx));
-
-        end
-
-    end
-
-    values = values - min(values);
-    correction_factor(i,:) = max(values);
-
-end
-
-correction_factor = max(correction_factor);
+correction_factor = normalizeTraces(obj_files);
 
 for i = 1:numel(obj_files)
     
@@ -349,4 +314,46 @@ function saveFigure(fig,save_folder,save_name)
             saveas(fig,strcat(fullSaveName,'.png'),'png')
             saveas(fig,strcat(fullSaveName,'.svg'),'svg')
             
+end
+
+
+function correction_factor = normalizeTraces(obj_files)
+    
+    n_bins = 500;
+    number_of_markers = 3;
+    correction_factor = zeros(numel(obj_files), number_of_markers);
+    
+    for i = 1:numel(obj_files)
+        
+        load(fullfile(obj_files(i).folder,obj_files(i).name))   
+    
+        [min_d,max_d] = bounds(obj.projection_absolute);
+                
+        bins = linspace(min_d,max_d+1,n_bins+1)';
+    
+        values = zeros(n_bins,number_of_markers);
+        
+        for idx = 1:n_bins
+    
+            for jdx = 1:number_of_markers
+            
+                start = bins(idx);
+                stop =  bins(idx+1);  
+                
+                kdx = obj.projection_absolute >=start & ...
+                    obj.projection_absolute < stop;
+                    
+                values(idx,jdx) = median(obj.intensity(kdx,jdx));
+    
+            end
+    
+        end
+    
+        values = values - min(values);
+        correction_factor(i,:) = max(values);
+    
+    end
+    
+    correction_factor = max(correction_factor);
+
 end
